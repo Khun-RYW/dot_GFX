@@ -775,9 +775,9 @@ void HT16K33_GFX::print(char *message) {
 }
 
 void HT16K33_GFX::bufferChar(uint8_t raw) {
-	uint8_t c = raw - fnt->first;					// set for GFX font bitmap range
-	if(c > fnt->last)	return;						// character code out of range?
-	uint16_t h = fnt->glyph[c].height, w = fnt->glyph[c].width;	// character height
+	if(raw < fnt->first || raw > fnt->last)	return;	// character is not defined in the GFX struct
+	uint8_t c = raw - fnt->first;					// set for GFX font bitmap range - perhaps draw an error symbol?
+	uint16_t h = fnt->glyph[c].height, w = fnt->glyph[c].width;	// character height and width, in bits or pixels
 
 	for(uint16_t y=0; y<h && y<16; y++){			// scan the bits in the bitmap table, max 16
 		for(uint16_t x=0; x<w; x++){				// for the width
